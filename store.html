@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IRONPS Store</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap');
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    color: white;
+    text-align: center;
+    background: black;
+    overflow-x: hidden;
+}
+
+canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; }
+
+.aurora {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at 50% 50%, rgba(0,255,255,0.2), transparent 60%),
+                radial-gradient(circle at 20% 80%, rgba(255,0,255,0.2), transparent 60%),
+                radial-gradient(circle at 80% 20%, rgba(0,255,0,0.2), transparent 60%);
+    animation: auroraMove 10s ease-in-out infinite alternate;
+    z-index: -1;
+}
+@keyframes auroraMove { 0% { transform: translateY(0px); } 100% { transform: translateY(-30px); } }
+
+h1 {
+    font-size: 3em;
+    background: linear-gradient(270deg, red, lime, cyan, magenta, red);
+    background-size: 800% 800%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: rgbMove 8s ease infinite, pulseGlow 2s infinite;
+    margin-top: 50px;
+}
+@keyframes rgbMove { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
+@keyframes pulseGlow { 0%, 100% { text-shadow: 0 0 10px white; } 50% { text-shadow: 0 0 25px white; } }
+
+.section {
+    max-width: 800px;
+    margin: 40px auto;
+    background: rgba(255,255,255,0.05);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: left;
+    box-shadow: 0 0 15px rgba(0,255,255,0.2);
+}
+
+.section h2 {
+    color: cyan;
+    border-bottom: 1px solid cyan;
+    padding-bottom: 5px;
+}
+
+.section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.section li {
+    padding: 5px 0;
+    border-bottom: 1px dashed rgba(255,255,255,0.1);
+}
+
+.download-btn {
+    display: inline-block;
+    margin: 15px auto;
+    padding: 12px 25px;
+    background: rgba(0,255,255,0.15);
+    border: 1px solid cyan;
+    color: cyan;
+    font-weight: bold;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,255,255,0.3);
+    transition: 0.3s;
+    text-decoration: none;
+    animation: pulseBtn 2s infinite;
+}
+@keyframes pulseBtn { 0%, 100% { box-shadow: 0 0 10px cyan; } 50% { box-shadow: 0 0 20px cyan; } }
+.download-btn:hover { background: cyan; color: black; box-shadow: 0 0 25px cyan; }
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+<div class="aurora"></div>
+
+<h1>IRONPS STORE</h1>
+
+<div class="section">
+<h2>💼 PRICE ROLE</h2>
+<ul>
+    <li>⭐ Moderator = FREE</li>
+    <li>💎 VIP = 5K / 2DL</li>
+    <li>💎 Super VIP = 8K</li>
+    <li>👑 Developer (Dev) = 40K / UNLI BLOCK</li>
+    <li>👑 Super Developer (SDev) = 80K / UNLI ALL</li>
+    <li>🛡 Staff = 120K</li>
+    <li>🚀 Developer+ = 160K</li>
+    <li>🏆 Co-Owner = NFS</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>💎 GEMS RATE</h2>
+<ul>
+    <li>2K / WL</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>🏷 TITLE / LEVEL</h2>
+<ul>
+    <li>Doctor Title = 5K / 2DL</li>
+    <li>G4G = 10K / 4DL</li>
+    <li>Of Legend = 15K / 8DL</li>
+    <li>Verify Badge = FREE</li>
+    <li>Tiktok Badge = 10K / 5DL</li>
+    <li>Level 125 = 8K / 4DL</li>
+    <li>CITEM = 2K / 1DL</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>📞 CONTACT BELI ASSETS / ROLE</h2>
+<a href="https://wa.me/6288279073491" target="_blank" class="download-btn">📱 WhatsApp Admin</a>
+<a href="https://chat.whatsapp.com/HZ9BHwlfXdNHh7qSj2zDa5" target="_blank" class="download-btn">💬 Join Group</a>
+</div>
+
+<a href="index.html" class="download-btn">⬅️ Kembali ke Home</a>
+
+<script>
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+let stars = [];
+function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+function createStars() {
+    stars = [];
+    for (let i = 0; i < 150; i++) {
+        stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+                     radius: Math.random() * 1.5, color: `hsl(${Math.random() * 360}, 100%, 80%)`,
+                     speed: Math.random() * 0.5 });
+    }
+}
+function drawStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stars.forEach(star => {
+        ctx.beginPath(); ctx.fillStyle = star.color;
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fill();
+    });
+}
+function moveStars() {
+    stars.forEach(star => {
+        star.y += star.speed;
+        if (star.y > canvas.height) { star.y = 0; star.x = Math.random() * canvas.width; }
+    });
+}
+function animate() { drawStars(); moveStars(); requestAnimationFrame(animate); }
+createStars(); animate();
+</script>
+
+</body>
+</html>
