@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IRONPS - Growtopia Private Server</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      color: white;
+      background: linear-gradient(135deg, #001f3f, #007f5f);
+      overflow-x: hidden;
+    }
+
+    /* Background bintang */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: url('https://i.ibb.co/kS3qv3P/stars-hd.png') repeat;
+      animation: starScroll 120s linear infinite;
+      z-index: -1;
+      opacity: 0.5;
+    }
+
+    @keyframes starScroll {
+      from {background-position: 0 0;}
+      to {background-position: -10000px 5000px;}
+    }
+
+    /* Partikel */
+    .particle {
+      position: absolute;
+      background: rgba(255,255,255,0.7);
+      border-radius: 50%;
+      animation: floatUp linear infinite;
+    }
+
+    @keyframes floatUp {
+      from {transform: translateY(100vh); opacity: 1;}
+      to {transform: translateY(-10vh); opacity: 0;}
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: pulseLogo 3s infinite;
+    }
+
+    @keyframes pulseLogo {
+      0%,100% {transform: scale(1);}
+      50% {transform: scale(1.05);}
+    }
+
+    .logo img {
+      height: 55px;
+    }
+
+    .logo h1 {
+      font-size: 30px;
+      color: #00ff88;
+      text-shadow: 0 0 10px #00ff88, 0 0 20px #00ff88;
+    }
+
+    .clock {
+      font-size: 16px;
+      color: #fff;
+    }
+
+    .tagline {
+      text-align: center;
+      font-size: 20px;
+      margin-top: 20px;
+      min-height: 40px;
+      text-shadow: 0 0 5px #00ff88;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeIn 2s forwards 1s;
+    }
+
+    @keyframes fadeIn {
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    .buttons {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .btn {
+      background: #00ff88;
+      border: none;
+      padding: 12px 25px;
+      margin: 10px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      color: #000;
+      font-weight: bold;
+      transition: 0.3s;
+      box-shadow: 0 0 15px #00ff88;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::after {
+      content: "";
+      position: absolute;
+      top: 0; left: -75px;
+      width: 50px; height: 100%;
+      background: rgba(255,255,255,0.4);
+      transform: skewX(-20deg);
+    }
+
+    .btn:hover::after {
+      animation: shine 0.75s forwards;
+    }
+
+    @keyframes shine {
+      100% {left: 125%;}
+    }
+
+    .btn:hover {
+      background: #00cc6e;
+      transform: scale(1.05);
+    }
+
+    .status {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 18px;
+    }
+
+    .status-indicator {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      background: #00ff88;
+      border-radius: 50%;
+      margin-right: 8px;
+      box-shadow: 0 0 10px #00ff88;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.6; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      padding: 20px;
+      background: rgba(0,0,0,0.3);
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <img src="https://i.ibb.co/yB6Lw3C/growtopia-logo-hd.png" alt="Growtopia">
+      <h1>IRONPS</h1>
+    </div>
+    <div class="clock" id="clock"></div>
+  </header>
+
+  <div class="tagline" id="typewriter"></div>
+
+  <div class="buttons">
+    <button class="btn">📥 Download VHost</button>
+    <button class="btn">💬 Join Discord</button>
+  </div>
+
+  <div class="status">
+    <span class="status-indicator"></span> Server Status: Online
+  </div>
+
+  <footer>
+    &copy; 2025 IRONPS GTPS | Contact Admin: @YourDiscordName
+  </footer>
+
+  <script>
+    // Efek typewriter
+    const text = "Fast, Stable, Lag-Free Growtopia Private Server";
+    let i = 0;
+    function typeWriter() {
+      if (i < text.length) {
+        document.getElementById("typewriter").innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typeWriter, 80);
+      }
+    }
+    typeWriter();
+
+    // Jam real-time
+    function updateClock() {
+      const now = new Date();
+      const time = now.toLocaleTimeString();
+      document.getElementById('clock').textContent = time;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Partikel melayang
+    for (let i = 0; i < 15; i++) {
+      const particle = document.createElement('div');
+      particle.classList.add('particle');
+      document.body.appendChild(particle);
+      const size = Math.random() * 6 + 2;
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      particle.style.left = `${Math.random() * 100}vw`;
+      particle.style.animationDuration = `${Math.random() * 10 + 5}s`;
+      particle.style.animationDelay = `${Math.random() * 5}s`;
+    }
+  </script>
+
+</body>
+</html>
