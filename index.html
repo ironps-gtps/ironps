@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IRONPS GTPS</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap');
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    color: white;
+    text-align: center;
+    background: black;
+    overflow-x: hidden;
+}
+
+canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; }
+
+.aurora {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at 50% 50%, rgba(0,255,255,0.2), transparent 60%),
+                radial-gradient(circle at 20% 80%, rgba(255,0,255,0.2), transparent 60%),
+                radial-gradient(circle at 80% 20%, rgba(0,255,0,0.2), transparent 60%);
+    animation: auroraMove 10s ease-in-out infinite alternate;
+    z-index: -1;
+}
+@keyframes auroraMove { 0% { transform: translateY(0px); } 100% { transform: translateY(-30px); } }
+
+h1 {
+    font-size: 3em;
+    background: linear-gradient(270deg, red, lime, cyan, magenta, red);
+    background-size: 800% 800%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: rgbMove 8s ease infinite, pulseGlow 2s infinite;
+    margin-top: 50px;
+}
+@keyframes rgbMove { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
+@keyframes pulseGlow { 0%, 100% { text-shadow: 0 0 10px white; } 50% { text-shadow: 0 0 25px white; } }
+
+.description { font-size: 1.1em; max-width: 650px; margin: 15px auto; }
+
+.status {
+    background: rgba(0,255,0,0.15);
+    padding: 10px 25px;
+    display: inline-block;
+    border-radius: 15px;
+    font-weight: bold;
+    margin: 20px 0;
+    box-shadow: 0 0 15px rgba(0,255,0,0.5);
+    border: 1px solid lime;
+    animation: pulse 1.5s infinite;
+}
+@keyframes pulse { 0% {box-shadow: 0 0 10px rgba(0,255,0,0.4);} 50% {box-shadow: 0 0 20px rgba(0,255,0,1);} 100% {box-shadow: 0 0 10px rgba(0,255,0,0.4);} }
+
+.download-btn {
+    display: block;
+    margin: 10px auto;
+    padding: 12px 25px;
+    background: rgba(0,255,255,0.15);
+    border: 1px solid cyan;
+    color: cyan;
+    font-weight: bold;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,255,255,0.3);
+    transition: 0.3s;
+    text-decoration: none;
+    width: 250px;
+    animation: pulseBtn 2s infinite;
+}
+@keyframes pulseBtn { 0%, 100% { box-shadow: 0 0 10px cyan; } 50% { box-shadow: 0 0 20px cyan; } }
+.download-btn:hover { background: cyan; color: black; box-shadow: 0 0 25px cyan; }
+
+pre {
+    background: rgba(20,20,20,0.8);
+    padding: 12px;
+    border-radius: 8px;
+    text-align: left;
+    display: inline-block;
+    color: #0ff;
+    border: 1px solid rgba(0,255,255,0.3);
+    animation: rgbBorder 5s linear infinite;
+}
+@keyframes rgbBorder { 0% {border-color: red;} 25% {border-color: lime;} 50% {border-color: cyan;} 75% {border-color: magenta;} 100% {border-color: red;} }
+
+.copy-btn {
+    background: cyan; color: black; border: none;
+    padding: 5px 10px; margin-top: 5px; cursor: pointer;
+    border-radius: 5px; font-weight: bold;
+}
+.copy-btn:hover { background: lime; }
+
+.features {
+    max-width: 800px;
+    margin: 40px auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
+    gap: 15px;
+}
+.feature-box { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,255,255,0.2); }
+
+.contact a {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px 20px;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid cyan;
+    border-radius: 8px;
+    color: cyan;
+    text-decoration: none;
+    transition: 0.3s;
+    animation: pulseBtn 2s infinite;
+}
+.contact a:hover { background: cyan; color: black; box-shadow: 0 0 15px cyan; }
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+<div class="aurora"></div>
+
+<h1>IRONPS</h1>
+
+<p class="description">
+🇮🇩 IRONPS GTPS adalah server Growtopia Private yang cepat, stabil, bebas lag, dan penuh fitur seru.<br>
+🇺🇸 IRONPS GTPS is a fast, stable, lag-free Growtopia Private Server packed with exciting features.
+</p>
+
+<div class="status">🟢 Server Status: Online</div>
+
+<a href="https://www.mediafire.com/file/s85a1d9m5byepy1/IRONPS.txt/file" class="download-btn" target="_blank">📥 Download Vhost</a>
+<a href="https://growsoft.cc/android.txt" class="download-btn" target="_blank">📥 Download Ptunnel (Android)</a>
+<a href="store.html" class="download-btn">🛒 Store / Price Role</a>
+
+<div>
+<h3>📋 Copy Host untuk Windows</h3>
+<pre id="hostText">
+91.134.85.13 growtopia1.com
+91.134.85.13 growtopia2.com
+91.134.85.13 www.growtopia1.com
+91.134.85.13 www.growtopia2.com
+</pre><br>
+<button class="copy-btn" onclick="copyHost()">Salin Host</button>
+</div>
+
+<div class="features">
+    <div class="feature-box">💎 Free VIP</div>
+    <div class="feature-box">🚀 No Lag Server</div>
+    <div class="feature-box">🎉 Daily Events</div>
+    <div class="feature-box">⚡ Fast Updates</div>
+</div>
+
+<div class="contact">
+    <a href="https://wa.me/6288279073491" target="_blank">📱 WhatsApp Admin</a>
+    <a href="https://chat.whatsapp.com/HZ9BHwlfXdNHh7qSj2zDa5" target="_blank">💬 Join IRONPS Group</a>
+</div>
+
+<p style="margin-top:20px; opacity:0.7;">Owner & Developer Website: <b>@Alvin</b></p>
+
+<script>
+function copyHost() {
+    const text = document.getElementById("hostText").innerText;
+    navigator.clipboard.writeText(text).then(() => {
+        alert("Host berhasil disalin!\nHost copied successfully!");
+    });
+}
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+let stars = [];
+function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+function createStars() {
+    stars = [];
+    for (let i = 0; i < 150; i++) {
+        stars.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+                     radius: Math.random() * 1.5, color: `hsl(${Math.random() * 360}, 100%, 80%)`,
+                     speed: Math.random() * 0.5 });
+    }
+}
+function drawStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stars.forEach(star => {
+        ctx.beginPath(); ctx.fillStyle = star.color;
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fill();
+    });
+}
+function moveStars() {
+    stars.forEach(star => {
+        star.y += star.speed;
+        if (star.y > canvas.height) { star.y = 0; star.x = Math.random() * canvas.width; }
+    });
+}
+function animate() { drawStars(); moveStars(); requestAnimationFrame(animate); }
+createStars(); animate();
+</script>
+
+</body>
+</html>
