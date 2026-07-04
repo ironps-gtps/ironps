@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YUNANI STORE</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Orbitron',sans-serif;
+background:#050816;
+color:#fff;
+overflow-x:hidden;
+}
+
+body::before{
+content:'';
+position:fixed;
+inset:0;
+background:
+radial-gradient(circle at center,#00aaff22,transparent 50%);
+pointer-events:none;
+}
+
+header{
+padding:20px;
+position:sticky;
+top:0;
+backdrop-filter:blur(10px);
+background:#050816cc;
+border-bottom:1px solid #00d9ff55;
+z-index:999;
+}
+
+nav{
+max-width:1200px;
+margin:auto;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.logo{
+font-size:28px;
+font-weight:800;
+color:#00d9ff;
+text-shadow:0 0 15px #00d9ff;
+}
+
+.hero{
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding:30px;
+}
+
+.hero-content{
+max-width:900px;
+}
+
+.hero h1{
+font-size:70px;
+margin-bottom:10px;
+color:#fff;
+text-shadow:
+0 0 10px #00d9ff,
+0 0 30px #00d9ff;
+}
+
+.hero p{
+color:#cbd5e1;
+margin-bottom:30px;
+font-size:18px;
+}
+
+.btn{
+display:inline-block;
+padding:15px 30px;
+border-radius:12px;
+text-decoration:none;
+font-weight:bold;
+transition:.3s;
+margin:5px;
+}
+
+.btn-primary{
+background:#00aaff;
+color:white;
+box-shadow:0 0 20px #00aaff;
+}
+
+.btn-primary:hover{
+transform:translateY(-4px);
+}
+
+.card-section{
+max-width:1200px;
+margin:auto;
+padding:50px 20px;
+}
+
+.section-title{
+text-align:center;
+font-size:40px;
+margin-bottom:40px;
+color:#00d9ff;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+}
+
+.card{
+background:#0b1225;
+border:1px solid #00aaff55;
+border-radius:20px;
+padding:25px;
+transition:.3s;
+box-shadow:0 0 15px #00aaff22;
+}
+
+.card:hover{
+transform:translateY(-6px);
+box-shadow:0 0 25px #00d9ff66;
+}
+
+.card h3{
+margin-bottom:10px;
+color:#00d9ff;
+}
+
+.qris-box{
+max-width:500px;
+margin:50px auto;
+padding:25px;
+background:#0b1225;
+border-radius:20px;
+border:1px solid #00aaff55;
+text-align:center;
+}
+
+.qris-box img{
+width:100%;
+max-width:300px;
+border-radius:10px;
+}
+
+footer{
+padding:30px;
+text-align:center;
+border-top:1px solid #00aaff33;
+margin-top:50px;
+color:#94a3b8;
+}
+
+.whatsapp{
+position:fixed;
+right:20px;
+bottom:20px;
+width:60px;
+height:60px;
+background:#25D366;
+border-radius:50%;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:28px;
+text-decoration:none;
+color:white;
+box-shadow:0 0 20px #25D366;
+}
+
+@media(max-width:768px){
+
+.hero h1{
+font-size:45px;
+}
+
+.section-title{
+font-size:30px;
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<nav>
+<div class="logo">YUNANI STORE</div>
+</nav>
+</header>
+
+<section class="hero">
+<div class="hero-content">
+
+<h1>YUNANI STORE</h1>
+
+<p>
+FAST • TRUSTED • SECURE
+<br>
+Digital Marketplace & Jasa Digital Terpercaya
+</p>
+
+<a href="#" class="btn btn-primary">
+CHAT ADMIN
+</a>
+
+</div>
+</section>
+
+<section class="card-section">
+
+<h2 class="section-title">LAYANAN</h2>
+
+<div class="grid">
+
+<div class="card">
+<h3>🎮 Top Up Game</h3>
+<p>MLBB, FF, PUBG, HOK dan lainnya.</p>
+</div>
+
+<div class="card">
+<h3>💰 Convert Saldo</h3>
+<p>Berbagai e-wallet dan pembayaran digital.</p>
+</div>
+
+<div class="card">
+<h3>🤝 Rekber</h3>
+<p>Jasa middleman aman dan terpercaya.</p>
+</div>
+
+<div class="card">
+<h3>📈 Suntik Sosmed</h3>
+<p>Followers, likes, views dan engagement.</p>
+</div>
+
+</div>
+
+</section>
+
+<section class="qris-box">
+
+<h2 style="color:#00d9ff;margin-bottom:20px;">
+QRIS PAYMENT
+</h2>
+
+<img src="qris.jpg" alt="QRIS">
+
+<p style="margin-top:15px;">
+Scan untuk melakukan pembayaran.
+</p>
+
+</section>
+
+<footer>
+© 2026 YUNANI STORE • YOUR TRUSTED DIGITAL PARTNER
+</footer>
+
+<a href="#" class="whatsapp">☎</a>
+
+</body>
+  </html>
