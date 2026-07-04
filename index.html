@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Top Up Wallet</title>
+
+<style>
+body{
+margin:0;
+background:#0b1220;
+font-family:Arial,sans-serif;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+color:#fff;
+}
+
+.card{
+width:360px;
+background:#1b2433;
+border-radius:20px;
+padding:20px;
+text-align:center;
+box-shadow:0 0 25px rgba(0,255,255,.3);
+}
+
+h1{
+color:#00d5ff;
+margin-bottom:20px;
+}
+
+input{
+width:100%;
+padding:14px;
+font-size:18px;
+border:none;
+border-radius:10px;
+margin-bottom:15px;
+}
+
+button{
+width:100%;
+padding:14px;
+background:#00d5ff;
+color:#000;
+font-size:18px;
+font-weight:bold;
+border:none;
+border-radius:10px;
+}
+
+#pay{
+display:none;
+}
+
+img{
+width:100%;
+max-width:300px;
+height:auto;
+display:block;
+margin:20px auto;
+border-radius:12px;
+background:#fff;
+padding:10px;
+}
+
+#timer{
+font-size:28px;
+color:#00ff99;
+font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<div id="form">
+
+<h1>TOP UP WALLET</h1>
+
+<input type="number" id="nominal" placeholder="Masukkan Nominal">
+
+<button onclick="bayar()">Bayar Sekarang</button>
+
+</div>
+
+<div id="pay">
+
+<h2>Silakan Scan QRIS</h2>
+
+<h3 id="total"></h3>
+
+<img src="qr_ID1026543053759_03.07.26_1783069253_1783069253956.jpeg" alt="QRIS">
+
+<p>Status:</p>
+
+<h2 style="color:orange;">Menunggu Pembayaran...</h2>
+
+<div id="timer">15:00</div>
+
+</div>
+
+</div>
+
+<script>
+
+function bayar(){
+
+let n=document.getElementById("nominal").value;
+
+if(!n){
+alert("Masukkan nominal");
+return;
+}
+
+document.getElementById("form").style.display="none";
+document.getElementById("pay").style.display="block";
+
+document.getElementById("total").innerHTML="Rp "+Number(n).toLocaleString("id-ID");
+
+let t=900;
+
+setInterval(()=>{
+
+let m=Math.floor(t/60);
+
+let s=t%60;
+
+document.getElementById("timer").innerHTML=
+String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+
+if(t>0)t--;
+
+},1000);
+
+}
+
+</script>
+
+</body>
+</html>
