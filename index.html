@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>YUNANI STORE — Payment Center</title>
+  <meta name="description" content="YUNANI STORE — QRIS, DANA, OVO, BCA. Kirim bukti pembayaran & chat admin resmi." />
+  <meta name="theme-color" content="#07142e" />
+  <style>
+    :root{
+      --bg1:#07142e; --bg2:#163062;
+      --card:#0e2a52; --muted:#cfe8ff; --accent:#1fb6ff; --accent-2:#2563eb;
+      --success:#22c55e; --radius:12px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;color:#fff;background:linear-gradient(135deg,var(--bg1),var(--bg2));-webkit-font-smoothing:antialiased}
+    /* container */
+    .page{max-width:1100px;margin:0 auto;padding:18px;display:block}
+    /* layout: mobile-first single column */
+    .wrap{display:block;gap:18px}
+    .card{background:var(--card);border-radius:14px;padding:14px;margin-bottom:14px;border:1px solid rgba(255,255,255,0.04);box-shadow:0 8px 20px rgba(0,0,0,0.45);user-select:text}
+    header{display:flex;gap:12px;align-items:center}
+    .logo{width:56px;height:56px;border-radius:10px;object-fit:cover;border:2px solid rgba(255,255,255,0.06)}
+    h1{margin:0;font-size:1.05rem}
+    .sub{color:var(--muted);font-size:0.95rem;margin-top:6px}
+    /* methods */
+    .methods{display:grid;gap:10px;margin-top:12px}
+    .method{display:flex;align-items:center;justify-content:space-between;padding:12px;border-radius:10px;background:rgba(255,255,255,0.02)}
+    .m-left{display:flex;gap:12px;align-items:center}
+    .m-icon{width:44px;height:44px;border-radius:8px;background:linear-gradient(90deg,var(--accent),var(--accent-2));display:grid;place-items:center;font-weight:700}
+    /* buttons: large and solid for mobile */
+    .actions{display:flex;gap:8px;align-items:center}
+    button.btn{padding:12px 14px;border-radius:10px;border:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;font-weight:700;font-size:1rem;cursor:pointer;touch-action:manipulation}
+    button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.08);color:#fff;padding:10px 12px;border-radius:10px;}
+    a.link{padding:10px 12px;border-radius:10px;background:#0b3b6a;color:#fff;text-decoration:none;font-weight:700}
+    /* upload */
+    .upload{margin-top:12px;padding:10px;border-radius:10px;background:rgba(255,255,255,0.02)}
+    input[type="text"]{padding:10px;border-radius:8px;border:0;background:rgba(255,255,255,0.03);color:#fff;min-width:140px}
+    input[type="file"]{color:#fff}
+    .thumb{width:84px;height:84px;border-radius:8px;background:rgba(0,0,0,0.08);display:grid;place-items:center;color:var(--muted)}
+    .small{font-size:0.92rem;color:var(--muted)}
+    /* side info */
+    .side{display:block}
+    .info{padding:12px;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.02);margin-bottom:12px}
+    .ascii{white-space:pre-wrap;font-family:monospace;background:rgba(0,0,0,0.06);padding:10px;border-radius:8px;color:#e6f7ff}
+    /* modal + toast z-index */
+    .modal-overlay{display:none;position:fixed;inset:0;align-items:center;justify-content:center;z-index:999;background:rgba(0,0,0,0.7)}
+    .modal-overlay.open{display:flex}
+    .modal{background:var(--card);padding:14px;border-radius:12px;max-width:420px;width:92%}
+    .modal img{max-width:320px;border-radius:8px}
+    .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;background:var(--success);color:#06220f;padding:10px 14px;border-radius:10px;display:none;z-index:1000;font-weight:700}
+    /* responsive: on wider screens two-column */
+    @media(min-width:840px){
+      .wrap{display:grid;grid-template-columns:1fr 320px;gap:18px}
+      .page{padding:24px}
+    }
+
+    /*
+      Force mobile/touch layout even if browser is in "Request desktop site"
+      Targets touch-capable devices (pointer: coarse) and devices without hover.
+    */
+    @media (pointer: coarse), (hover: none) {
+      .wrap { grid-template-columns: 1fr !important; gap: 14px; }
+      .page { padding-left: 14px; padding-right: 14px; }
+      .card, .side, aside.card { width: 100%; max-width: none; }
+      .method { padding: 14px; border-radius: 12px; }
+      button.btn, button.ghost, a.link { padding: 14px 16px; font-size: 1.05rem; border-radius: 12px; }
+      .thumb { width: 96px; height: 96px; }
+      .modal { width: 95%; max-width: 420px; }
+    }
+
+    /* JS-touch fallback class (applied to <html> as .touch-device) */
+    .touch-device .wrap { grid-template-columns: 1fr !important; }
+    .touch-device button.btn, .touch-device button.ghost, .touch-device a.link { padding: 14px 16px; font-size: 1.05rem; }
+    .touch-device .thumb { width: 96px; height: 96px; }
+  </style>
+</head>
+<body>
+  <script>
+    // JS fallback: detect touch-capable device and add class to <html>
+    (function(){
+      try {
+        const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints && navigator.msMaxTouchPoints > 0);
+        if (isTouch) document.documentElement.classList.add('touch-device');
+      } catch(e){ /* no-op */ }
+    })();
+  </script>
+
+  <div class="page">
+    <div class="wrap">
+      <main class="card" aria-labelledby="title">
+        <header>
+          <img class="logo" src="file_00000000d5707209bce95860e22bffd7.png" alt="logo">
+          <div>
+            <h1 id="title">YUNANI STORE — Payment Center</h1>
+            <div class="sub">FAST • TRUSTED • SECURE — Admin: <strong>6288277321479</strong></div>
+          </div>
+        </header>
+
+        <div class="methods" role="list">
+          <div class="method" role="listitem">
+            <div class="m-left"><div class="m-icon">QR</div><div><div style="font-weight:700">Bayar dengan QRIS</div><div class="small">Scan lalu upload bukti</div></div></div>
+            <div class="actions"><button class="btn" id="open-qr">Lihat QR</button><a id="download-qr" class="link" href="#" download="qris.png">Unduh</a></div>
+          </div>
+
+          <div class="method" role="listitem">
+            <div class="m-left"><div class="m-icon">DA</div><div><div style="font-weight:700">DANA</div><div id="dana" class="small">088271359556</div></div></div>
+            <div class="actions"><button class="btn" id="copy-btn">Salin</button><button class="ghost" id="wa-btn">Konfirmasi</button></div>
+          </div>
+
+          <div class="method" role="listitem">
+            <div class="m-left"><div class="m-icon">BC</div><div><div style="font-weight:700">BCA</div><div class="small">A/n YUNANI STORE (Pending)</div></div></div>
+            <div class="actions"><button class="ghost" disabled>Pending</button></div>
+          </div>
+        </div>
+
+        <div class="upload" aria-label="Upload bukti">
+          <div style="display:flex;justify-content:space-between;align-items:center"><strong>Upload Bukti Pembayaran</strong><span class="small">Max 5MB</span></div>
+          <form id="upload-form" style="margin-top:10px">
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <input type="text" id="order" placeholder="Order ID (opsional)">
+              <input type="file" id="file" accept="image/*">
+              <button class="btn" type="submit">Unggah</button>
+            </div>
+            <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
+              <div class="thumb" id="thumb">Preview</div>
+              <div id="preview-text" class="small"></div>
+            </div>
+            <div id="upload-msg" style="margin-top:8px" class="small"></div>
+          </form>
+        </div>
+      </main>
+
+      <aside class="side">
+        <div class="info card" role="region" aria-label="Informasi toko">
+          <strong>╔════『 YUNANI STORE 』════╗</strong>
+          <div class="small" style="margin-top:8px;white-space:pre-wrap">
+⚡ FAST • TRUSTED • SECURE
+
+📞 Admin Utama
+6288277321479
+
+🕐 Open 24 Jam
+          </div>
+          <div style="margin-top:12px">
+            <strong>LAYANAN</strong>
+            <div class="small" style="margin-top:6px">Convert Saldo • Rekber • Jasa Post Fee • Top Up Game • Suntik Sosmed</div>
+          </div>
+        </div>
+
+        <div class="info card" role="region" aria-label="Fee rekber">
+          <strong>💰 FEE REKBER</strong>
+          <div style="margin-top:8px" class="small">
+            0–170K → 5K<br>170–299K → 10K<br>300–499K → 15K<br>500–899K → 20K<br>900K–1JT → 25K
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- modal & toast -->
+  <div id="overlay" class="modal-overlay" aria-hidden="true">
+    <div class="modal">
+      <button id="close-modal" class="ghost" style="float:right">✕</button>
+      <h3>QRIS — YUNANI STORE</h3>
+      <img id="qr-img" src="qr_ID1026543053759_03.07.26_1783069253_1783069253956.jpeg" alt="QRIS" style="max-width:260px;margin-top:10px">
+      <div style="margin-top:10px"><a id="modal-download" class="link" href="#" download="qris.png">Unduh QR</a></div>
+    </div>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite">Tersalin</div>
+
+  <script>
+    (function(){
+      // UI wiring
+      const openQr = document.getElementById('open-qr');
+      const overlay = document.getElementById('overlay');
+      const closeModal = document.getElementById('close-modal');
+      const modalDownload = document.getElementById('modal-download');
+      const qrImg = document.getElementById('qr-img');
+
+      const copyBtn = document.getElementById('copy-btn');
+      const dana = document.getElementById('dana').textContent.trim();
+      const waBtn = document.getElementById('wa-btn');
+
+      const fileInput = document.getElementById('file');
+      const thumb = document.getElementById('thumb');
+      const previewText = document.getElementById('preview-text');
+      const uploadMsg = document.getElementById('upload-msg');
+      const uploadForm = document.getElementById('upload-form');
+
+      const toast = document.getElementById('toast');
+      function showToast(msg){ toast.textContent = msg; toast.style.display='block'; setTimeout(()=>toast.style.display='none',2000); }
+
+      openQr.addEventListener('click', ()=> {
+        overlay.classList.add('open'); overlay.style.display='flex'; overlay.setAttribute('aria-hidden','false');
+        modalDownload.href = qrImg.src;
+      });
+      closeModal.addEventListener('click', ()=> { overlay.style.display='none'; overlay.setAttribute('aria-hidden','true'); });
+      overlay.addEventListener('click', (e)=> { if(e.target===overlay){ overlay.style.display='none'; overlay.setAttribute('aria-hidden','true'); }});
+      document.addEventListener('keydown', (e)=> { if(e.key==='Escape' && overlay.style.display==='flex'){ overlay.style.display='none'; overlay.setAttribute('aria-hidden','true'); }});
+
+      copyBtn.addEventListener('click', async ()=> {
+        try {
+          if(navigator.clipboard && navigator.clipboard.writeText) await navigator.clipboard.writeText(dana);
+          else { const ta=document.createElement('textarea'); ta.value=dana; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }
+          showToast('Nomor DANA tersalin');
+        } catch(err){ console.error(err); showToast('Gagal menyalin'); }
+      });
+
+      waBtn.addEventListener('click', ()=> {
+        const txt = encodeURIComponent('Halo, saya sudah bayar via DANA ke ' + dana + '. Mohon konfirmasi. Terima kasih.');
+        window.open('https://wa.me/6288277321479?text=' + txt, '_blank', 'noopener');
+      });
+
+      fileInput.addEventListener('change', ()=> {
+        const f = fileInput.files[0];
+        if(!f){ thumb.textContent='Preview'; thumb.style.backgroundImage=''; previewText.textContent=''; return; }
+        if(f.size > 5*1024*1024){ uploadMsg.textContent='File > 5MB'; return; }
+        const url = URL.createObjectURL(f);
+        thumb.style.backgroundImage = `url(${url})`; thumb.style.backgroundSize='cover'; thumb.textContent='';
+        previewText.textContent = `${f.name} • ${Math.round(f.size/1024)} KB`;
+        uploadMsg.textContent = '';
+      });
+
+      uploadForm.addEventListener('submit', (e)=> {
+        e.preventDefault();
+        const f = fileInput.files[0];
+        if(!f){ uploadMsg.textContent='Pilih file bukti terlebih dahulu.'; return; }
+        uploadMsg.textContent='Simulasi unggah...';
+        setTimeout(()=>uploadMsg.textContent='Berhasil (demo). Hubungi admin untuk verifikasi.',900);
+      });
+
+      modalDownload.href = qrImg.src;
+    })();
+  </script>
+</body>
+</html>
