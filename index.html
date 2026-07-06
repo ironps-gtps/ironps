@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>YUNANI STORE — Payment Center</title>
+  <meta name="description" content="YUNANI STORE — QRIS, DANA, OVO, BCA. Kirim bukti pembayaran & chat admin resmi." />
+  <meta name="theme-color" content="#07142e" />
+  <style>
+    :root{
+      --bg1:#07142e; --bg2:#1d2f7d;
+      --card:#0f2146; --muted:#d7eaff; --accent:#2563eb; --accent-2:#06b6d4;
+      --success:#22c55e; --danger:#ff6b6b; --radius:14px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      background:linear-gradient(135deg,var(--bg1),var(--bg2));
+      color:#fff;display:flex;align-items:center;justify-content:center;padding:20px;
+      -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+      -webkit-touch-callout:none; -webkit-user-select:none; user-select:none;
+    }
+
+    /* container */
+    .container{width:100%;max-width:920px;display:grid;grid-template-columns:1fr 320px;gap:18px}
+    @media(max-width:900px){ .container{grid-template-columns:1fr} }
+
+    /* main card */
+    .card{
+      background:var(--card);border-radius:16px;padding:16px;box-shadow:0 8px 24px rgba(0,0,0,0.5);
+      border:1px solid rgba(255,255,255,0.03);
+      user-select:text; /* allow text select inside card */
+    }
+    header{display:flex;gap:12px;align-items:center}
+    .logo{width:72px;height:72px;border-radius:12px;object-fit:cover;border:2px solid rgba(255,255,255,0.06)}
+    h1{margin:0;font-size:1.15rem}
+    .sub{color:rgba(255,255,255,0.85);font-size:0.95rem;margin-top:6px}
+
+    /* methods */
+    .methods{margin-top:14px;display:grid;gap:10px}
+    .method{display:flex;align-items:center;justify-content:space-between;padding:12px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.02)}
+    .m-left{display:flex;gap:12px;align-items:center}
+    .m-icon{width:44px;height:44px;border-radius:10px;background:linear-gradient(90deg,var(--accent-2),var(--accent));display:grid;place-items:center;font-weight:700}
+
+    /* buttons: solid, large hit area */
+    .actions{display:flex;gap:8px;align-items:center}
+    button.btn{
+      padding:10px 14px;border-radius:10px;border:0;background:linear-gradient(90deg,var(--accent-2),var(--accent));
+      color:#fff;font-weight:700;font-size:0.95rem;cursor:pointer;touch-action:manipulation;
+    }
+    button.ghost{
+      background:transparent;border:1px solid rgba(255,255,255,0.08);color:#fff;font-weight:700;padding:9px 12px;border-radius:10px;
+    }
+    a.link{
+      padding:9px 12px;border-radius:10px;background:#0b2a4a;color:#fff;text-decoration:none;font-weight:700;
+    }
+
+    /* Upload section */
+    .upload{margin-top:14px;padding:12px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.02)}
+    .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    input[type="text"]{padding:10px;border-radius:8px;border:0;background:rgba(255,255,255,0.03);color:#fff;min-width:140px}
+    input[type="file"]{color:#fff}
+    .thumb{width:84px;height:84px;background:rgba(0,0,0,0.08);border-radius:8px;display:grid;place-items:center;color:rgba(255,255,255,0.6);font-size:0.9rem}
+
+    /* side info */
+    .side{display:flex;flex-direction:column;gap:12px}
+    .info{padding:12px;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.02)}
+    .ascii{white-space:pre-wrap;font-family:monospace;background:rgba(0,0,0,0.06);padding:10px;border-radius:8px;color:#e6f7ff}
+
+    /* modal & toast */
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.72);align-items:center;justify-content:center;z-index:999}
+    .modal-overlay.open{display:flex}
+    .modal{background:var(--card);padding:16px;border-radius:12px;max-width:480px;width:90%;text-align:center;border:1px solid rgba(255,255,255,0.04)}
+    .modal img{max-width:320px;border-radius:8px}
+
+    .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:22px;background:#22c55e;color:#06220f;padding:10px 14px;border-radius:10px;font-weight:700;display:none;z-index:1000}
+
+    /* make interactive elements accessible/touch-friendly */
+    button, a { -webkit-tap-highlight-color: rgba(255,255,255,0.08); }
+    /* debug borders: uncomment for layout debugging */
+    /* .method{outline:1px dashed rgba(255,255,255,0.02);} */
+  </style>
+</head>
+<body>
+  <div class="container">
+    <main class="card" aria-labelledby="title">
+      <header>
+        <img class="logo" src="file_00000000d5707209bce95860e22bffd7.png" alt="Logo YUNANI STORE" loading="lazy">
+        <div>
+          <h1 id="title">YUNANI STORE — Payment Center</h1>
+          <div class="sub">FAST • TRUSTED • SECURE — Admin: <strong>6288277321479</strong></div>
+        </div>
+      </header>
+
+      <section class="methods" aria-label="Metode pembayaran">
+        <div class="method">
+          <div class="m-left">
+            <div class="m-icon">QR</div>
+            <div><div style="font-weight:700">Bayar dengan QRIS</div><div style="color:rgba(255,255,255,0.8)">Scan lalu upload bukti</div></div>
+          </div>
+          <div class="actions">
+            <button class="btn" id="open-qr">Lihat QR</button>
+            <a id="download-qr" class="link" download="qris-yunani.png" href="#">Unduh</a>
+          </div>
+        </div>
+
+        <div class="method">
+          <div class="m-left">
+            <div class="m-icon">DA</div>
+            <div><div style="font-weight:700">DANA</div><div id="dana" style="color:rgba(255,255,255,0.85)">088271359556</div></div>
+          </div>
+          <div class="actions">
+            <button class="btn" id="copy-btn">Salin</button>
+            <button class="ghost" id="wa-btn">Konfirmasi</button>
+          </div>
+        </div>
+
+        <div class="method">
+          <div class="m-left">
+            <div class="m-icon">BC</div>
+            <div><div style="font-weight:700">BCA</div><div style="color:rgba(255,255,255,0.8)">A/n YUNANI STORE (Pending)</div></div>
+          </div>
+          <div class="actions">
+            <button class="ghost" disabled>Pending</button>
+          </div>
+        </div>
+      </section>
+
+      <div class="upload" aria-label="Upload bukti">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <strong>Upload Bukti Pembayaran</strong><span style="color:rgba(255,255,255,0.85)">Max 5MB</span>
+        </div>
+        <form id="upload-form" style="margin-top:10px">
+          <div class="row">
+            <input type="text" id="order" placeholder="Order ID (opsional)" />
+            <input type="file" id="file" accept="image/*" />
+            <button class="btn" type="submit">Unggah</button>
+          </div>
+          <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
+            <div class="thumb" id="thumb">Preview</div>
+            <div style="color:rgba(255,255,255,0.85)" id="preview-text"></div>
+          </div>
+          <div id="upload-msg" style="margin-top:8px;color:rgba(255,255,255,0.9)"></div>
+        </form>
+      </div>
+    </main>
+
+    <aside class="side">
+      <div class="info card" role="region" aria-label="Informasi toko">
+        <strong>╔════『 YUNANI STORE 』════╗</strong>
+        <div class="ascii" style="margin-top:8px">
+⚡ FAST • TRUSTED • SECURE
+
+📞 Admin Utama
+6288277321479
+
+🕐 Open 24 Jam
+        </div>
+        <div style="margin-top:8px">
+          <strong>LAYANAN</strong>
+          <div style="color:rgba(255,255,255,0.85);margin-top:6px;line-height:1.4">Convert Saldo • Rekber • Jasa Post Fee • Top Up Game • Suntik Sosmed</div>
+        </div>
+      </div>
+
+      <div class="info card" role="region" aria-label="Fee rekber">
+        <strong>💰 FEE REKBER</strong>
+        <div style="margin-top:8px">
+          <div style="display:flex;justify-content:space-between"><span>0–170K</span><strong>5K</strong></div>
+          <div style="display:flex;justify-content:space-between"><span>170–299K</span><strong>10K</strong></div>
+          <div style="display:flex;justify-content:space-between"><span>300–499K</span><strong>15K</strong></div>
+          <div style="display:flex;justify-content:space-between"><span>500–899K</span><strong>20K</strong></div>
+          <div style="display:flex;justify-content:space-between"><span>900K–1JT</span><strong>25K</strong></div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- modal -->
+  <div id="overlay" class="modal-overlay" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal">
+      <button id="modal-close" class="ghost" style="float:right">✕</button>
+      <h3>QRIS — YUNANI STORE</h3>
+      <img id="qr-img" src="qr_ID1026543053759_03.07.26_1783069253_1783069253956.jpeg" alt="QRIS" loading="lazy" style="margin-top:12px">
+      <div style="margin-top:12px"><a id="modal-download" class="link" href="#" download="qris.png">Unduh QR</a></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite">Tersalin</div>
+
+  <script>
+    // Robust UI behavior
+    (function(){
+      const openQr = document.getElementById('open-qr');
+      const overlay = document.getElementById('overlay');
+      const closeModal = document.getElementById('modal-close');
+      const modalDownload = document.getElementById('modal-download');
+      const qrImg = document.getElementById('qr-img');
+
+      const copyBtn = document.getElementById('copy-btn');
+      const dana = document.getElementById('dana').textContent.trim();
+      const waBtn = document.getElementById('wa-btn');
+
+      const fileInput = document.getElementById('file');
+      const thumb = document.getElementById('thumb');
+      const previewText = document.getElementById('preview-text');
+      const uploadMsg = document.getElementById('upload-msg');
+      const uploadForm = document.getElementById('upload-form');
+
+      const toast = document.getElementById('toast');
+
+      function showToast(msg){
+        toast.textContent = msg; toast.style.display='block';
+        setTimeout(()=>toast.style.display='none',2000);
+      }
+
+      // modal open
+      openQr.addEventListener('click', () => {
+        overlay.classList.add('open'); overlay.classList.toggle('open', true);
+        overlay.style.display = 'flex';
+        overlay.setAttribute('aria-hidden','false');
+        modalDownload.href = qrImg.src;
+        // trap focus not necessary for small demo; can add if needed
+      });
+      closeModal.addEventListener('click', closeOverlay);
+      overlay.addEventListener('click', (e) => { if(e.target === overlay) closeOverlay(); });
+      document.addEventListener('keydown', (e) => { if(e.key === 'Escape' && overlay.style.display === 'flex') closeOverlay(); });
+      function closeOverlay(){ overlay.style.display = 'none'; overlay.setAttribute('aria-hidden','true'); }
+
+      // copy number
+      copyBtn.addEventListener('click', async () => {
+        try {
+          if(navigator.clipboard && navigator.clipboard.writeText) await navigator.clipboard.writeText(dana);
+          else { const ta = document.createElement('textarea'); ta.value = dana; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }
+          showToast('Nomor DANA tersalin');
+        } catch (err) {
+          console.error(err); showToast('Gagal menyalin');
+        }
+      });
+
+      // WA prefill
+      waBtn.addEventListener('click', () => {
+        const txt = encodeURIComponent('Halo, saya sudah bayar via DANA ke ' + dana + '. Mohon konfirmasi. Terima kasih.');
+        window.open('https://wa.me/6288277321479?text=' + txt, '_blank', 'noopener');
+      });
+
+      // file preview
+      fileInput.addEventListener('change', () => {
+        const f = fileInput.files[0];
+        if(!f){ thumb.textContent='Preview'; thumb.style.backgroundImage=''; previewText.textContent=''; return; }
+        if(f.size > 5 * 1024 * 1024){ uploadMsg.textContent = 'File > 5MB, pilih file lebih kecil.'; return; }
+        const url = URL.createObjectURL(f);
+        thumb.style.backgroundImage = `url(${url})`; thumb.style.backgroundSize='cover'; thumb.textContent='';
+        previewText.textContent = `${f.name} • ${(f.size/1024|0)} KB`;
+        uploadMsg.textContent = '';
+      });
+
+      // submit (demo)
+      uploadForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const f = fileInput.files[0];
+        if(!f){ uploadMsg.textContent = 'Pilih file bukti terlebih dahulu.'; return; }
+        uploadMsg.textContent = 'Simulasi unggah...';
+        setTimeout(()=>{ uploadMsg.textContent = 'Berhasil (demo). Hubungi admin untuk verifikasi.'; }, 900);
+        // If you have backend endpoint /api/upload-proof, implement fetch here.
+      });
+
+      // Ensure download button has valid href fallback
+      modalDownload.href = qrImg.src;
+    })();
+  </script>
+</body>
+  </html>
